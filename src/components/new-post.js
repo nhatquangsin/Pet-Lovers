@@ -53,6 +53,7 @@ const PostTypeOption = styled.option``;
 function NewPost() {
   const [content, setContent] = useState('');
   const [postType, setPostType] = useState(0);
+
   const senId = localStorage.getItem('userId');
 
   const [res, post] = usePostData({
@@ -60,7 +61,6 @@ function NewPost() {
     data: {
       postType,
       content,
-      isAvailable: true,
       senId,
     }
   }, (res) => { 

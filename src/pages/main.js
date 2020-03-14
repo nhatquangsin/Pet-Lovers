@@ -26,6 +26,7 @@ function Main() {
   console.log(data);
   const userFullname = localStorage.getItem('userFullname');
   const userEmail = localStorage.getItem('userEmail');
+  const userId = localStorage.getItem('userId');
 
   const logout = () => {
     localStorage.clear();
@@ -53,9 +54,12 @@ function Main() {
             <div style={{ fontWeight: 'bold', fontSize: '18px' }}>Pet Lovers</div>
           </div>
           <NewPost />
-          {data.dataList && data.dataList.map(post =>
-            <Post
+          {data.dataList && data.dataList.map(post => {
+            const likeUsers = post.likes.map(like => like.userId);
+
+            return (<Post
               key={post._id}
+              id={post._id}
               postType={post.postType}
               user={post.user}
               title={post.name}
@@ -63,14 +67,16 @@ function Main() {
               createdAt={post.createdAt}
               likes={post.likes}
               address={post.address}
-            />
+              isLiked={likeUsers.includes(userId)}
+            />);
+          }
           )}
         </NewFeed>
         <Trending width='25%'>
           <div style={{ padding: '10px', paddingBottom: '0px', fontWeight: 'bold', fontSize: '18px' }}>{userFullname}</div>
           <div style={{ paddingRight: '10px', paddingBottom: '10px', fontSize: '16px', color: '#666' }}>{userEmail}</div>
           <div style={ButtonStyle}>
-            <Button text='Logout' width='100%' height='40px' margin='0px' borderRadius='20px' onClick={() => logout()} backgroundColor='#8900B0' color='#fff'/>
+            <Button text='Logout' width='100%' height='40px' margin='0px' borderRadius='20px' onClick={() => logout()} backgroundColor='#8900B0' color='#fff' />
           </div>
         </Trending>
       </MainContainer>

@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import styled from 'styled-components';
 import moment from 'moment';
-import { IoIosHeartEmpty } from "react-icons/io";
+
+import { IoIosHeartEmpty, IoIosHeart } from "react-icons/io";
 import { POST_TYPE } from '../constants/index';
+import { API_URL } from '../constants/url';
+import { usePostData } from '../hooks';
 
 const PostContainer = styled.div`
   width: 100%;
@@ -39,7 +42,7 @@ const Like = styled.div`
   padding: 10px;
   justify-content: space-between;
   border-radius: 5px;
-  color: #999;
+  color: ${props => props.isLiked ? '#FF2F2F' : '#999'};
 
   :hover {
     background-color: #FFCDCD;
@@ -58,6 +61,28 @@ const PostType = styled.div`
 `;
 
 function Post(props) {
+  const [likes, setLikes] = useState(props.likes.length);
+  const [isLiked, setIsLiked] = useState(props.isLiked);
+  const userId = localStorage.getItem('userId');
+
+  const [likeResponse, like] = usePostData({
+    url: API_URL + '/likes',
+    data: {
+      postId: props.id,
+      userId,
+    }
+  }, (res) => { 
+  });
+
+  const [dislikeResponse, disLike] = usePostData({
+    url: API_URL + '/likes/delete',
+    data: {
+      postId: props.id,
+      userId,
+    }
+  }, (res) => { 
+  });
+
   return (
     <PostContainer>
       <div style={{ padding: '10px', borderWidth: '1px', borderColor: '#cccccc', borderStyle: 'solid' }}>
@@ -76,8 +101,21 @@ function Post(props) {
           </div>
         }
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <Like>
-            <IoIosHeartEmpty />{props.likes}
+          <Like isLiked={isLiked} onClick={() => {
+            if (isLiked) {
+              disLike();
+              setIsLiked(!isLiked);
+              setLikes(likes - 1);
+            } else {
+              like();
+              setIsLiked(!isLiked);
+              setLikes(likes + 1)
+            }
+          }}>
+            {
+              isLiked ? <IoIosHeart /> : <IoIosHeartEmpty />
+            }
+            {likes}
           </Like>
         </div>
       </div>
