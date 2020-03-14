@@ -38,26 +38,26 @@ function Signup() {
 
   return (
     <SignupContainer>
-      <h1>Sign up</h1>
+      <h1>Đăng ký</h1>
       <InputForm>
         Email
         <Input value={email} onChange={event => setEmail(event.target.value)} />
       </InputForm>
       <InputForm>
-        Password
+        Mật khẩu
         <Input password value={password} onChange={event => setPassword(event.target.value)} />
       </InputForm>
       <InputForm>
-        Fullname
+        Tên
         <Input value={fullname} onChange={event => setFullname(event.target.value)} />
       </InputForm>
       <InputForm>
-        Phone
+        Số điện thoại
         <Input value={phone} onChange={event => setPhone(event.target.value)} />
       </InputForm>
       <div>
         <Button
-          text="Sign up"
+          text="Đăng ký"
           onClick={() => {
             signup();
           }}

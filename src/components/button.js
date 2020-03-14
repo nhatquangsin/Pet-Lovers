@@ -8,7 +8,8 @@ const ButtonContainer = styled.button`
   width: ${props => props.width || '200px'};
   height: ${props => props.height || '50px'};
   background-color: ${props => props.backgroundColor || '#ccffcc'};
-  border-radius: 10px;
+  color: ${props => props.color || '#000'};
+  border-radius: ${props => props.borderRadius || '10px'};
   display: flex;
   flex-direction: column;
   justify-content: center;

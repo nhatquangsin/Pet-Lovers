@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import { IoIosHeartEmpty } from "react-icons/io";
+import { POST_TYPE } from '../constants/index';
 
 const PostContainer = styled.div`
   width: 100%;
@@ -56,11 +57,6 @@ const PostType = styled.div`
   border-radius: 10px;
 `;
 
-const POST_TYPE = [
-  'Nhận nuôi',
-  'Tìm người nuôi',
-];
-
 function Post(props) {
   return (
     <PostContainer>
@@ -74,9 +70,11 @@ function Post(props) {
         </div>
 
         <Content>{props.content}</Content>
-        <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '5px', color: '#666' }}>
-          Địa chỉ:&nbsp;<Address>{props.address}</Address>
-        </div>
+        {props.address &&
+          <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '5px', color: '#666' }}>
+            Địa chỉ:&nbsp;<Address>{props.address}</Address>
+          </div>
+        }
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <Like>
             <IoIosHeartEmpty />{props.likes}

@@ -57,23 +57,23 @@ function Login(props) {
 
   return (
     <LoginContainer>
-      <h1>Pet Lovers Social</h1>
+      <h1>Mạng xã hội dành cho những người yêu thú cưng</h1>
       <LoginForm>
         <InputForm>
           Email
           <Input value={email} onChange={event => setEmail(event.target.value)} />
         </InputForm>
         <InputForm>
-          Password
+          Mật Khẩu
           <Input value={password} onChange={event => setPassword(event.target.value)} password />
         </InputForm>
         <div>
-          <Button text="Sign in"
+          <Button text="Đăng nhập"
             onClick={() => {
               signin();
             }}
           />
-          <Button text="Sign up" onClick={() => navigate('/signup', true)} />
+          <Button text="Đăng ký" onClick={() => navigate('/signup', true)} />
         </div>
       </LoginForm>
     </LoginContainer>
