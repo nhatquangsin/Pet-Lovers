@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import styled from 'styled-components';
+import axios from 'axios';
 
 import { useFetch } from '../hooks';
 import Button from './button';
@@ -33,8 +34,9 @@ const ContentInput = styled.textarea`
   border: none;
 `;
 
-const ImageContainer = styled.div`
+const ImageContainer = styled.form`
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   :hover {
@@ -53,19 +55,39 @@ const PostTypeOption = styled.option``;
 function NewPost() {
   const [content, setContent] = useState('');
   const [postType, setPostType] = useState(0);
+  const [images, setImages] = useState([]);
 
   const senId = localStorage.getItem('userId');
 
-  const [res, post] = usePostData({
-    url: API_URL + '/posts',
-    data: {
-      postType,
-      content,
-      senId,
+  const onPostSubmit = async () => {
+    const formData = new FormData();
+
+    images.forEach((image, i) => {
+      formData.append(i, image);
+    });
+
+    const uploadResponse = await fetch(`${API_URL}/upload`, {
+      method: 'POST',
+      body: formData
+    });
+    const result = await uploadResponse.json();
+    const uploadedImages = result.dataList.map(data => data.url);
+
+    const postResponse = await axios({
+      method: 'POST',
+      url: `${API_URL}/posts`,
+      data: {
+        postType,
+        content,
+        senId,
+        images: uploadedImages,
+      },
+    });
+
+    if (postResponse.status === 200) {
+      window.location.reload();
     }
-  }, (res) => { 
-    window.location.reload();
-  });
+  }
 
   return (
     <NewPostContainer>
@@ -75,11 +97,26 @@ function NewPost() {
           value={content}
           onChange={event => setContent(event.target.value)}
         />
+        {
+          images && images.map((image, i) =>
+            <img src={URL.createObjectURL(image)} key={i} style={{ width: '200px', height: '200px', objectFit: 'cover' }} />
+          )
+        }
       </div>
       <ActionBar>
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <ImageContainer style={{ width: '40px', height: '40px', borderRadius: '20px' }} >
+          <ImageContainer
+            style={{ width: '40px', height: '40px', borderRadius: '20px' }}
+            onClick={() => document.getElementById('imageInput').click()}
+          >
             <FiImage size='30' color='#8900B0' />
+            <input
+              type='file'
+              id='imageInput'
+              onChange={event => setImages([...images, event.target.files[0]])}
+              multiple
+              hidden
+            />
           </ImageContainer>
           <PostTypeSelect value={postType}
             onChange={event => setPostType(event.target.value)}
@@ -96,7 +133,7 @@ function NewPost() {
           backgroundColor='#8900B0'
           color='#fff'
           borderRadius='20px'
-          onClick={() => post()}
+          onClick={() => onPostSubmit()}
         />
       </ActionBar>
     </NewPostContainer>

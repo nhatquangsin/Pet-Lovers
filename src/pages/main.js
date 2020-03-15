@@ -2,6 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 import { navigate } from 'hookrouter';
+import { GoHome, GoHeart } from "react-icons/go";
 
 import { useFetch } from '../hooks';
 import { API_URL } from '../constants/url';
@@ -18,12 +19,28 @@ const MainContainer = styled.div`
   flex-direction: row;
 `;
 
+const NavigateTab = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+  padding: 5px;
+  padding-top: 10px;
+  width: 200px;
+  cursor: default;
+
+  :hover {
+    color: #CF31FF;
+  }
+`;
+
 function Main() {
   const [data, loading] = useFetch(
     API_URL + '/posts'
   );
 
-  console.log(data);
   const userFullname = localStorage.getItem('userFullname');
   const userEmail = localStorage.getItem('userEmail');
   const userId = localStorage.getItem('userId');
@@ -46,8 +63,14 @@ function Main() {
     return (
       <MainContainer>
         <Navigation width='25%'>
-          <div>Pet Lovers</div>
-          <div>Profile</div>
+          <NavigateTab>
+            <GoHome style={{ paddingRight: '5px' }} size={30} />
+            Trang chủ
+          </NavigateTab>
+          <NavigateTab>
+            <GoHeart style={{ paddingRight: '5px' }} size={30} />
+            Quan tâm
+          </NavigateTab>
         </Navigation>
         <NewFeed width='50%'>
           <div style={{ position: 'relative', top: 0, padding: '10px' }}>
@@ -60,14 +83,8 @@ function Main() {
             return (<Post
               key={post._id}
               id={post._id}
-              postType={post.postType}
-              user={post.user}
-              title={post.name}
-              content={post.content}
-              createdAt={post.createdAt}
-              likes={post.likes}
-              address={post.address}
               isLiked={likeUsers.includes(userId)}
+              {...post}
             />);
           }
           )}

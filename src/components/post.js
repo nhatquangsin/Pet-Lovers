@@ -71,7 +71,7 @@ function Post(props) {
       postId: props.id,
       userId,
     }
-  }, (res) => { 
+  }, (res) => {
   });
 
   const [dislikeResponse, disLike] = usePostData({
@@ -80,7 +80,7 @@ function Post(props) {
       postId: props.id,
       userId,
     }
-  }, (res) => { 
+  }, (res) => {
   });
 
   return (
@@ -99,6 +99,11 @@ function Post(props) {
           <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '5px', color: '#666' }}>
             Địa chỉ:&nbsp;<Address>{props.address}</Address>
           </div>
+        }
+        {
+          props.images && props.images.map((image, i) =>
+            <img src={image} key={i} style={{ width: '200px', height: '200px', objectFit: 'cover' }} />
+          )
         }
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <Like isLiked={isLiked} onClick={() => {
