@@ -40,6 +40,7 @@ function Main() {
   const [data, loading] = useFetch(
     API_URL + '/posts'
   );
+  console.log(data);
 
   const userFullname = localStorage.getItem('userFullname');
   const userEmail = localStorage.getItem('userEmail');

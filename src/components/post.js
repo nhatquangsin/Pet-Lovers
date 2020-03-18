@@ -100,6 +100,11 @@ function Post(props) {
             Địa chỉ:&nbsp;<Address>{props.address}</Address>
           </div>
         }
+        {props.user.phone &&
+          <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '5px', color: '#666' }}>
+            Số điện thoại:&nbsp;<Address>{props.user.phone}</Address>
+          </div>
+        }
         {
           props.images && props.images.map((image, i) =>
             <img src={image} key={i} style={{ width: '200px', height: '200px', objectFit: 'cover' }} />
