@@ -4,7 +4,6 @@ import { useRoutes } from 'hookrouter';
 
 import './App.css';
 import Main from './pages/main';
-import Login from './pages/login';
 import Routes from './routes';
 
 function App() {

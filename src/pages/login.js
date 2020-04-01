@@ -51,6 +51,7 @@ function Login(props) {
     localStorage.setItem('userPhone', res.data.user.phone);
     localStorage.setItem('userRole', res.data.user.role);
     localStorage.setItem('userId', res.data.user._id);
+    localStorage.setItem('friends', res.data.friends);
 
     navigate('/main');
   });

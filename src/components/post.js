@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 
 import styled from 'styled-components';
 import moment from 'moment';
+import { navigate } from 'hookrouter';
 
 import { IoIosHeartEmpty, IoIosHeart } from "react-icons/io";
 import { POST_TYPE } from '../constants/index';
 import { API_URL } from '../constants/url';
 import { usePostData } from '../hooks';
+import { query } from '../utils/query';
 
 const PostContainer = styled.div`
   width: 100%;
@@ -20,8 +22,11 @@ const UserInformation = styled.div`
   margin-bottom: 5px;
 `;
 
-const UserFullname = styled.div`
+const UserFullname = styled.a`
   font-weight: bold;
+  :hover {
+    color: #555;
+  }
 `;
 
 const PostTitle = styled.div``;
@@ -83,12 +88,18 @@ function Post(props) {
   }, (res) => {
   });
 
+  const onClickUsername = () => {
+    navigate('/profile/' + props.user._id);
+  }
+
   return (
     <PostContainer>
       <div style={{ padding: '10px', borderWidth: '1px', borderColor: '#cccccc', borderStyle: 'solid' }}>
         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
           <UserInformation>
-            <UserFullname>{props.user.fullname}</UserFullname>
+            <UserFullname onClick={() => onClickUsername()}>
+              {props.user.fullname}
+            </UserFullname>
             <Date>{moment(parseInt(props.createdAt)).format('MMM DD, HH:mm')}</Date>
           </UserInformation>
           <PostType postType={props.postType}>{POST_TYPE[props.postType]}</PostType>

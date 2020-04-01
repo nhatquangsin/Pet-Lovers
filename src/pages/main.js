@@ -13,13 +13,13 @@ import Post from '../components/post';
 import Button from '../components/button';
 import NewPost from '../components/new-post';
 
-const MainContainer = styled.div`
+export const MainContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
 `;
 
-const NavigateTab = styled.div`
+export const NavigateTab = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -94,14 +94,14 @@ function Main() {
           <div style={{ padding: '10px', paddingBottom: '0px', fontWeight: 'bold', fontSize: '18px' }}>{userFullname}</div>
           <div style={{ paddingRight: '10px', paddingBottom: '10px', fontSize: '16px', color: '#666' }}>{userEmail}</div>
           <div style={ButtonStyle}>
-            <Button text='Logout' width='100%' height='40px' margin='0px' borderRadius='20px' onClick={() => logout()} backgroundColor='#8900B0' color='#fff' />
+            <Button text='Đăng xuất' width='100%' height='40px' margin='0px' borderRadius='20px' onClick={() => logout()} backgroundColor='#8900B0' color='#fff' />
           </div>
         </Trending>
       </MainContainer>
     );
   } else {
     return (
-      <Button text='Please login' onClick={() => navigate('/')} />
+      <Button text='Bạn chưa đăng nhập' onClick={() => navigate('/')} />
     );
   }
 }
