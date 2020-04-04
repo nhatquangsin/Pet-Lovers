@@ -7,6 +7,7 @@ import Button from '../components/button';
 import Input from '../components/input';
 import { usePostData } from '../hooks';
 import { API_URL } from '../constants/url';
+import { query } from '../utils/query';
 
 const LoginContainer = styled.div`
   width: 100%;
@@ -35,26 +36,34 @@ export const InputForm = styled.div`
 `;
 
 function Login(props) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const [res, signin] = usePostData({
-    url: API_URL + '/users/signin',
-    data: {
-      email,
-      password,
+  const signin = async () => {
+    const res = await query({
+      method: 'POST',
+      url: API_URL + '/users/signin',
+      data: {
+        email,
+        password,
+      },
+    });
+
+    if (res && res.data.status === 200) {
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('userFullname', res.data.user.fullname);
+      localStorage.setItem('userEmail', res.data.user.email);
+      localStorage.setItem('userPhone', res.data.user.phone);
+      localStorage.setItem('userRole', res.data.user.role);
+      localStorage.setItem('userId', res.data.user._id);
+      localStorage.setItem('friends', res.data.friends);
+
+      navigate('/main');
+    } else {
+      setError('Email hoặc mật khẩu không hợp lệ');
     }
-  }, (res) => {
-    localStorage.setItem('token', res.data.token);
-    localStorage.setItem('userFullname', res.data.user.fullname);
-    localStorage.setItem('userEmail', res.data.user.email);
-    localStorage.setItem('userPhone', res.data.user.phone);
-    localStorage.setItem('userRole', res.data.user.role);
-    localStorage.setItem('userId', res.data.user._id);
-    localStorage.setItem('friends', res.data.friends);
-
-    navigate('/main');
-  });
+  }
 
   return (
     <LoginContainer>
@@ -62,20 +71,30 @@ function Login(props) {
       <LoginForm>
         <InputForm>
           Email
-          <Input value={email} onChange={event => setEmail(event.target.value)} />
+          <Input value={email} onChange={event => {
+            setEmail(event.target.value);
+            setError('');
+          }} />
         </InputForm>
         <InputForm>
           Mật Khẩu
-          <Input value={password} onChange={event => setPassword(event.target.value)} password />
+          <Input value={password} onChange={event => {
+            setPassword(event.target.value);
+            setError('');
+          }} password />
         </InputForm>
         <div>
-          <Button text="Đăng nhập"
+          <Button text='Đăng nhập'
             onClick={() => {
+              if (email === '' || password === '') {
+                setError('Vui lòng nhập email và mật khẩu');
+              }
               signin();
             }}
           />
-          <Button text="Đăng ký" onClick={() => navigate('/signup', true)} />
+          <Button text='Đăng ký' onClick={() => navigate('/signup', true)} />
         </div>
+        {error !== '' ? <div style={{ color: 'red' }}>{error}</div> : <></>}
       </LoginForm>
     </LoginContainer>
   );

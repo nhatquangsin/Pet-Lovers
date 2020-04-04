@@ -2,7 +2,8 @@ import React from 'react';
 
 import styled from 'styled-components';
 import { navigate } from 'hookrouter';
-import { GoHome, GoHeart } from "react-icons/go";
+import { GoHome, GoHeart  } from 'react-icons/go';
+import { FaUserFriends } from 'react-icons/fa';
 
 import { useFetch } from '../hooks';
 import { API_URL } from '../constants/url';
@@ -40,7 +41,6 @@ function Main() {
   const [data, loading] = useFetch(
     API_URL + '/posts'
   );
-  console.log(data);
 
   const userFullname = localStorage.getItem('userFullname');
   const userEmail = localStorage.getItem('userEmail');
@@ -60,6 +60,14 @@ function Main() {
     paddingRight: '10px'
   };
 
+  const navigateFriends = () => {
+    navigate(`/friends/${userId}`);
+  }
+
+  const navigateLikedPosts = () => {
+    navigate(`/liked-posts/${userId}`);
+  }
+
   if (localStorage.getItem('token')) {
     return (
       <MainContainer>
@@ -68,9 +76,13 @@ function Main() {
             <GoHome style={{ paddingRight: '5px' }} size={30} />
             Trang chủ
           </NavigateTab>
-          <NavigateTab>
+          <NavigateTab onClick={navigateLikedPosts}>
             <GoHeart style={{ paddingRight: '5px' }} size={30} />
             Quan tâm
+          </NavigateTab>
+          <NavigateTab onClick={navigateFriends}>
+            <FaUserFriends style={{ paddingRight: '5px' }} size={30} />
+            Bạn bè
           </NavigateTab>
         </Navigation>
         <NewFeed width='50%'>

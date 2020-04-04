@@ -14,7 +14,7 @@ const Wrapper = styled.div`
 export const Row = ({ left, right }) => {
   return (
     <Wrapper>
-      <div>{left}:</div>
+      <div>{left}</div>
       <div>{right}</div>
     </Wrapper>
   )
